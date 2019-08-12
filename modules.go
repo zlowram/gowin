@@ -2,6 +2,7 @@ package gowin
 
 import (
 	"debug/pe"
+	"errors"
 	"unsafe"
 
 	"github.com/zlowram/memread"
@@ -12,7 +13,7 @@ type Module struct {
 	Addr uint64
 }
 
-type ModuleExport struct {
+type Export struct {
 	Ordinal int
 	Addr    uint64
 }
@@ -21,7 +22,19 @@ func NewModule(name string, addr uint64) *Module {
 	return &Module{name, addr}
 }
 
-func (m *Module) GetModuleExports() (exports map[string]*ModuleExport, err error) {
+func (m *Module) Export(name string) (export *Export, err error) {
+	exports, err := m.Exports()
+	if err != nil {
+		return nil, err
+	}
+	export, ok := exports[name]
+	if !ok {
+		err = errors.New("Gowin.Module.Export: export not found")
+	}
+	return export, err
+}
+
+func (m *Module) Exports() (exports map[string]*Export, err error) {
 	memoryReader := memread.NewReader(m.Addr)
 	peFile, err := pe.NewFile(memoryReader)
 	if err != nil {
@@ -35,7 +48,7 @@ func (m *Module) GetModuleExports() (exports map[string]*ModuleExport, err error
 	numberOfNames := int(imageExportDirectory.NumberOfNames)
 	addressOfNameOrdinals := (*uint32)(unsafe.Pointer(uintptr(uint64(imageExportDirectory.AddressOfNameOrdinals) + m.Addr)))
 
-	exports = make(map[string]*ModuleExport, numberOfNames)
+	exports = make(map[string]*Export, numberOfNames)
 	for i := 0; i < numberOfNames; i++ {
 		nameStringRva := *(*uint32)(unsafe.Pointer((uintptr(unsafe.Pointer(addressOfNames)) + uintptr(i*4))))
 		nameStringAddr := m.Addr + uint64(nameStringRva)
@@ -44,7 +57,7 @@ func (m *Module) GetModuleExports() (exports map[string]*ModuleExport, err error
 		ordinal := *(*uint16)(unsafe.Pointer((uintptr(unsafe.Pointer(addressOfNameOrdinals)) + uintptr(i*2))))
 		functionRva := *(*uint32)(unsafe.Pointer(uintptr(unsafe.Pointer(addressOfFunctions)) + uintptr(ordinal*uint16(4))))
 		functionAddr := m.Addr + uint64(functionRva)
-		exports[name] = &ModuleExport{
+		exports[name] = &Export{
 			Ordinal: i + int(imageExportDirectory.Base),
 			Addr:    functionAddr,
 		}
