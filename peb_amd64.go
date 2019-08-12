@@ -1,3 +1,3 @@
 package gowin
 
-func getPebPointer() uint64
+func pebPointer() uint64
