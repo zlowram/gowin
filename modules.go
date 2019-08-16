@@ -29,7 +29,7 @@ func (m *Module) Export(name string) (export *Export, err error) {
 	}
 	export, ok := exports[name]
 	if !ok {
-		err = errors.New("Gowin.Module.Export: export not found")
+		return nil, errors.New("Gowin.Module.Export: export not found")
 	}
 	return export, err
 }

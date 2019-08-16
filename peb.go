@@ -14,7 +14,7 @@ func PebAddress() *Peb {
 func (p *Peb) Module(name string) (module *Module, err error) {
 	module, ok := p.Modules()[name]
 	if !ok {
-		err = errors.New("Gowin.Peb.Module: module is not loaded")
+		return nil, errors.New("Gowin.Peb.Module: module is not loaded")
 	}
 	return module, err
 }
