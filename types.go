@@ -2,6 +2,7 @@ package gowin
 
 // PROCESSINFOCLASS Enumeration
 // Used in NTQueryInformationProcess
+// Add docs.
 const (
 	ProcessBasicInformation     = 0
 	ProcessDebugPort            = 7
@@ -11,6 +12,7 @@ const (
 	ProcessSubsystemInformation = 75
 )
 
+// Add docs.
 type SystemInfo struct {
 	ProcessorArchitecture     uint16
 	Reserved                  uint16
@@ -25,6 +27,7 @@ type SystemInfo struct {
 	ProcessorRevision         uint16
 }
 
+// Add docs.
 type MemoryStatusEx struct {
 	Length               uint32
 	MemoryLoad           uint32
@@ -37,23 +40,27 @@ type MemoryStatusEx struct {
 	AvailExtendedVirtual uint64
 }
 
+// Add docs.
 type UnicodeString struct {
 	Length        uint16
 	MaximumLength uint16
 	Buffer        *uint16
 }
 
+// Add docs.
 type PebLdrData struct {
 	Reserved1               [8]byte
 	Reserved2               [3]*uint64
 	InMemoryOrderModuleList *ListEntry
 }
 
+// Add docs.
 type ListEntry struct {
 	Flink *ListEntry
 	Blink *ListEntry
 }
 
+// Add docs.
 type LdrDataTableEntry struct {
 	Reserved1          [2]*uint64
 	InMemoryOrderLinks ListEntry
@@ -69,6 +76,7 @@ type LdrDataTableEntry struct {
 	TimeDateStamp      uint64
 }
 
+// Add docs.
 type ImageExportDirectory struct {
 	Characteristics       uint32
 	TimeDateStamp         uint32

@@ -7,18 +7,22 @@ import (
 	"unsafe"
 )
 
+// Add docs.
 func PebAddress() *Peb {
 	return (*Peb)(unsafe.Pointer(uintptr(pebPointer())))
 }
 
+// Add docs.
 func (p *Peb) Module(name string) (module *Module, err error) {
 	module, ok := p.Modules()[name]
 	if !ok {
+		// I would just: return nil, errors.New(...)
 		err = errors.New("Gowin.Peb.Module: module is not loaded")
 	}
 	return module, err
 }
 
+// Add docs.
 func (p *Peb) Modules() map[string]*Module {
 	modules := make(map[string]*Module)
 

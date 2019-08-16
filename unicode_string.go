@@ -5,6 +5,10 @@ import (
 	"unsafe"
 )
 
+// What about using "golang.org/x/text/encoding" and
+// "golang.org/x/text/encoding/unicode"?
+
+// Add docs.
 func NewUnicodeString(str string) UnicodeString {
 	wchars := utf16.Encode([]rune(str + "\x00"))
 	return UnicodeString{
@@ -14,6 +18,7 @@ func NewUnicodeString(str string) UnicodeString {
 	}
 }
 
+// Add docs.
 func (u UnicodeString) String() string {
 	sl := struct {
 		addr uintptr

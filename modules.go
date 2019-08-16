@@ -8,20 +8,24 @@ import (
 	"github.com/zlowram/memread"
 )
 
+// Add docs.
 type Module struct {
 	Name string
 	Addr uint64
 }
 
+// Add docs.
 type Export struct {
 	Ordinal int
 	Addr    uint64
 }
 
+// Add docs.
 func NewModule(name string, addr uint64) *Module {
 	return &Module{name, addr}
 }
 
+// Add docs.
 func (m *Module) Export(name string) (export *Export, err error) {
 	exports, err := m.Exports()
 	if err != nil {
@@ -29,11 +33,13 @@ func (m *Module) Export(name string) (export *Export, err error) {
 	}
 	export, ok := exports[name]
 	if !ok {
+		// I would just: return nil, errors.New(...)
 		err = errors.New("Gowin.Module.Export: export not found")
 	}
 	return export, err
 }
 
+// Add docs.
 func (m *Module) Exports() (exports map[string]*Export, err error) {
 	memoryReader := memread.NewReader(m.Addr)
 	peFile, err := pe.NewFile(memoryReader)
@@ -48,6 +54,7 @@ func (m *Module) Exports() (exports map[string]*Export, err error) {
 	numberOfNames := int(imageExportDirectory.NumberOfNames)
 	addressOfNameOrdinals := (*uint32)(unsafe.Pointer(uintptr(uint64(imageExportDirectory.AddressOfNameOrdinals) + m.Addr)))
 
+	// You can just do: exports = make(map[string]*Export
 	exports = make(map[string]*Export, numberOfNames)
 	for i := 0; i < numberOfNames; i++ {
 		nameStringRva := *(*uint32)(unsafe.Pointer((uintptr(unsafe.Pointer(addressOfNames)) + uintptr(i*4))))

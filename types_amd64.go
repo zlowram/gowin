@@ -1,6 +1,7 @@
 package gowin
 
 // https://docs.microsoft.com/en-us/windows/win32/api/winternl/ns-winternl-_peb#remarks
+// Add docs.
 type Peb struct {
 	Reserved1              [2]byte
 	BeingDebugged          byte

@@ -2,6 +2,7 @@ package gowin
 
 import "io"
 
+// Add docs.
 func NewCString(reader io.Reader) string {
 	readString := make([]byte, 0)
 	b := make([]byte, 1)
