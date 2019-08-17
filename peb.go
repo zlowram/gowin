@@ -16,7 +16,7 @@ func (p *Peb) Module(name string) (module *Module, err error) {
 	if !ok {
 		return nil, errors.New("Gowin.Peb.Module: module is not loaded")
 	}
-	return module, err
+	return module, nil
 }
 
 func (p *Peb) Modules() map[string]*Module {

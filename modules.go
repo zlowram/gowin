@@ -31,7 +31,7 @@ func (m *Module) Export(name string) (export *Export, err error) {
 	if !ok {
 		return nil, errors.New("Gowin.Module.Export: export not found")
 	}
-	return export, err
+	return export, nil
 }
 
 func (m *Module) Exports() (exports map[string]*Export, err error) {
